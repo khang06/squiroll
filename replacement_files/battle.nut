@@ -219,6 +219,8 @@ function Create( param )
 			  // [329]  OP_JMP            0      0    0    0
 		}
 	}
+
+	::rollback.start();
 }
 
 function framedisplaysetup() {
@@ -337,6 +339,8 @@ function Release()
 	::discord.rpc_set_large_img_key("mainicon");
 	if (::replay.GetState() == ::replay.PLAY && ::network.inst == null)
 		::discord.rpc_commit_details_and_state("Idle", "");
+
+	::rollback.stop();
 
 	if (this.ping_task != null) {
 		::loop.DeleteTask(this.ping_task);

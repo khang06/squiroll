@@ -18,6 +18,7 @@
 #include "lobby.h"
 #include "better_game_loop.h"
 #include "discord.h"
+#include "rollback.h"
 
 #include <shared.h>
 

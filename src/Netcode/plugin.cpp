@@ -1,3 +1,5 @@
+#include "rollback.h"
+#include "squirrel.h"
 #if __INTELLISENSE__
 #undef _HAS_CXX20
 #define _HAS_CXX20 0
@@ -108,7 +110,7 @@ public:
 //     return 1; // Number of return values
 // }
 
-static HSQUIRRELVM v;
+HSQUIRRELVM v;
 
 SQInteger r_resync_get(HSQUIRRELVM v) {
     sq_pushbool(v, (SQBool)resyncing);
@@ -383,6 +385,22 @@ extern "C" {
                 sq_setfunc(v, _SC("update_delay"),update_delay);
                 sq_setfunc(v, _SC("resyncing"), r_resync_get);
                 sq_setfunc(v, _SC("get_buffered_frames"), get_buffered_frames);
+                sq_setfunc(v, _SC("start"), [](HSQUIRRELVM v) -> SQInteger {
+                    rollback_start();
+                    return 1;
+                });
+                sq_setfunc(v, _SC("stop"), [](HSQUIRRELVM v) -> SQInteger {
+                    rollback_stop();
+                    return 1;
+                });
+                sq_setfunc(v, _SC("preframe"), [](HSQUIRRELVM v) -> SQInteger {
+                    rollback_preframe();
+                    return 1;
+                });
+                sq_setfunc(v, _SC("postframe"), [](HSQUIRRELVM v) -> SQInteger {
+                    rollback_postframe();
+                    return 1;
+                });
             });
 
             sq_createtable(v, _SC("punch"), [](HSQUIRRELVM v) {

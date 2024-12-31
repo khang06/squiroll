@@ -13,7 +13,7 @@
 #include "config.h"
 
 // Superluminal markers for debugging frametime spikes
-#define PROFILING 0
+#define PROFILING 1
 
 typedef void stdcall window_update_frame_t();
 typedef bool stdcall window_render_t();
